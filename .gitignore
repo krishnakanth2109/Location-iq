@@ -1,0 +1,11 @@
+# Backend ignores
+Backend/node_modules/
+Backend/.env
+Backend/build/
+Backend/coverage/
+
+# Frontend ignores
+frontend/node_modules/
+frontend/.env
+frontend/build/
+frontend/coverage/
