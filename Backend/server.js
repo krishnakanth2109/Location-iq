@@ -220,6 +220,6 @@ adminRouter.get('/trips/:employeeId', async (req, res) => {
 });
 app.use('/api/admin', adminRouter);
 
-const PORT = process.env.PORT || 5000;
+
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
