@@ -1,4 +1,4 @@
-const API_URL = 'https://location-iq-2.onrender.com/api';
+const API_URL = 'https://location-iq-2.onrender.com';
 
 const request = async (endpoint, options = {}) => {
     const token = localStorage.getItem('token');
