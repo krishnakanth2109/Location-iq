@@ -11,7 +11,10 @@ const app = express();
 // --- Production-Ready CORS Configuration ---
 // Define the list of allowed domains for CORS.
 // It's recommended to pull this from environment variables.
-const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
+// **MODIFIED**: Added your new Vercel URL to the default list.
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [
+    'https://location-iq.vercel.app' // Fallback for when .env is not configured
+];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -28,7 +31,6 @@ const corsOptions = {
 };
 
 // Use the configured CORS options.
-// For a public API, you could revert to app.use(cors()).
 app.use(cors(corsOptions));
 app.use(express.json());
 
