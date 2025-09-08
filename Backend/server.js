@@ -98,6 +98,11 @@ const adminMiddleware = (req, res, next) => {
 
 // --- API ROUTES ---
 
+// **NEW**: Root route to check if the server is running.
+app.get('/', (req, res) => {
+  res.json({ msg: 'Welcome to the Location Tracker API. Server is running.' });
+});
+
 // --- Authentication Routes (Public) ---
 const authRouter = express.Router();
 
@@ -122,7 +127,8 @@ authRouter.post('/register', async (req, res) => {
     });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    // **FIXED**: Respond with JSON on error
+    res.status(500).json({ msg: 'Server error during registration' });
   }
 });
 
@@ -146,7 +152,8 @@ authRouter.post('/login', async (req, res) => {
     });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    // **FIXED**: Respond with JSON on error
+    res.status(500).json({ msg: 'Server error during login' });
   }
 });
 app.use('/api/auth', authRouter);
@@ -164,7 +171,8 @@ tripRouter.post('/start', async (req, res) => {
     res.json({ tripId: trip.id });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    // **FIXED**: Respond with JSON on error
+    res.status(500).json({ msg: 'Server Error on starting trip' });
   }
 });
 
@@ -184,7 +192,8 @@ tripRouter.post('/stop', async (req, res) => {
     res.json({ msg: 'Trip saved successfully', trip });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    // **FIXED**: Respond with JSON on error
+    res.status(500).json({ msg: 'Server Error on stopping trip' });
   }
 });
 app.use('/api/trips', tripRouter);
@@ -203,7 +212,8 @@ adminRouter.get('/employees', async (req, res) => {
     res.json(employees);
   } catch (err) { 
     console.error(err.message);
-    res.status(500).send('Server Error'); 
+    // **FIXED**: Respond with JSON on error
+    res.status(500).json({ msg: 'Server Error fetching employees' }); 
   }
 });
 
@@ -215,11 +225,12 @@ adminRouter.get('/trips/:employeeId', async (req, res) => {
     res.json(trips);
   } catch (err) { 
     console.error(err.message);
-    res.status(500).send('Server Error'); 
+    // **FIXED**: Respond with JSON on error
+    res.status(500).json({ msg: 'Server Error fetching trips' }); 
   }
 });
 app.use('/api/admin', adminRouter);
 
 
-
+// --- Start Server ---
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
