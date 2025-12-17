@@ -1,4 +1,8 @@
-const API_URL = 'https://location-iq-2.onrender.com';
+// --- CONFIGURATION ---
+// We point this to your Render Backend URL
+const API_URL = 'https://location-node.onrender.com/api'; 
+// const API_URL = 'http://localhost:5000/api'; // Keep this commented out for local testing
+// ---------------------
 
 const request = async (endpoint, options = {}) => {
     const token = localStorage.getItem('token');
@@ -10,12 +14,19 @@ const request = async (endpoint, options = {}) => {
         headers['x-auth-token'] = token;
     }
 
-    const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.msg || 'An API error occurred');
+    try {
+        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+        const data = await response.json();
+        
+        if (!response.ok) {
+            // Throw a more descriptive error so the UI can handle it
+            throw new Error(data.msg || 'An API error occurred');
+        }
+        return data;
+    } catch (error) {
+        console.error("API Call Failed:", error);
+        throw error;
     }
-    return data;
 };
 
 export const login = (credentials) => request('/auth/login', { method: 'POST', body: JSON.stringify(credentials) });
