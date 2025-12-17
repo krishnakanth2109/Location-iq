@@ -1,7 +1,7 @@
 // --- CONFIGURATION ---
-// We point this to your Render Backend URL
-const API_URL = 'https://location-node.onrender.com/api'; 
-// const API_URL = 'http://localhost:5000/api'; // Keep this commented out for local testing
+// FIX 1: Ensure there is NO slash at the end of .com
+// FIX 2: Use the URL from your error message (location-iq-2)
+const API_URL = 'https://location-iq-2.onrender.com/api'; 
 // ---------------------
 
 const request = async (endpoint, options = {}) => {
@@ -14,19 +14,14 @@ const request = async (endpoint, options = {}) => {
         headers['x-auth-token'] = token;
     }
 
-    try {
-        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
-        const data = await response.json();
-        
-        if (!response.ok) {
-            // Throw a more descriptive error so the UI can handle it
-            throw new Error(data.msg || 'An API error occurred');
-        }
-        return data;
-    } catch (error) {
-        console.error("API Call Failed:", error);
-        throw error;
+    // This logic ensures we don't get double slashes //
+    const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+    const data = await response.json();
+    
+    if (!response.ok) {
+        throw new Error(data.msg || 'An API error occurred');
     }
+    return data;
 };
 
 export const login = (credentials) => request('/auth/login', { method: 'POST', body: JSON.stringify(credentials) });
