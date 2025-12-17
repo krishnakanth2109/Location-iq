@@ -8,25 +8,11 @@ require('dotenv').config();
 // --- App Initialization ---
 const app = express();
 
-// --- CORS CONFIGURATION (Updated) ---
-// We allow your Netlify URL and Localhost (for testing)
-const allowedOrigins = [
-  'https://location-tracker56.netlify.app', // Your deployed Frontend
-  'http://localhost:3000',                    // React Localhost
-  'http://localhost:5173'                     // Vite Localhost (just in case)
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  }
-}));
+// --- CORS CONFIGURATION (FIXED) ---
+// We simply call app.use(cors()) with no arguments.
+// This allows requests from ANY origin (Netlify, Localhost, Mobile, etc.)
+// This prevents the "No Access-Control-Allow-Origin" error.
+app.use(cors());
 
 app.use(express.json());
 
